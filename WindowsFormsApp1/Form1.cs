@@ -17,7 +17,6 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
         }
-        public StringBuilder sb = new StringBuilder();
         public int klucz;
         private void button1_Click(object sender, EventArgs e)
         {
@@ -25,8 +24,9 @@ namespace WindowsFormsApp1
                 label1.Text = openFileDialog1.FileName;
                 byte[] fileBytes = File.ReadAllBytes(label1.Text);
                 string napis = Encoding.ASCII.GetString(fileBytes);
-                foreach (byte b in fileBytes)
+                
                 textBox1.Text = napis.ToString();
+                textBox3.Text = napis.ToString();
             }
         }
 
@@ -40,9 +40,31 @@ namespace WindowsFormsApp1
         
         public void button3_Click(object sender, EventArgs e)
         {
+            if (textBox2.Text=="")
+            {
+                MessageBox.Show("Nie podano klucza");
+            }
+            else
+            {
             klucz = System.Convert.ToInt32(textBox2.Text);
             label2.Text = "Obecnie użyty klucz:" + textBox2.Text;
             textBox3.Text = Encrypt(klucz, textBox1.Text);
+            }
+            
+        }
+        protected void button4_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text == "")
+            {
+                MessageBox.Show("Nie podano klucza");
+            }
+            else
+            {
+                klucz = System.Convert.ToInt32(textBox2.Text);
+                label2.Text = "Obecnie użyty klucz:" + textBox2.Text;
+                textBox1.Text = Decrypt(klucz, textBox3.Text);
+            }
+            
         }
 
         public static string Encrypt(int klucz, string dokodowania)
@@ -117,9 +139,16 @@ namespace WindowsFormsApp1
             return new string(buffer);
         }
 
-        protected void button4_Click(object sender, EventArgs e)
+        private void button2_Click_1(object sender, EventArgs e)
         {
-            textBox1.Text = Decrypt(klucz, textBox3.Text);
+            saveFileDialog1.FileName = "zakodowany";
+            saveFileDialog1.Filter= "Dokument tekstowy (*.txt)|*.txt";
+            saveFileDialog1.ShowDialog();
+            
+            string location;
+            location = saveFileDialog1.FileName;
+
+            File.WriteAllText(location , textBox3.Text);
         }
     }
 }
