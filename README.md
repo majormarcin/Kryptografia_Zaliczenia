@@ -1,0 +1,1 @@
+Szyfr_Plotkowy
